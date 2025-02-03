@@ -4,13 +4,12 @@ import axios from 'axios';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faUser, faPhone, faScissors, faDollarSign, faCalendarAlt, faUserTie, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPhone, faScissors, faDollarSign, faCalendarAlt, faUserTie, faPencilAlt, faTrashAlt, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { format } from 'date-fns';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
-
-library.add(faUser, faPhone, faScissors, faDollarSign, faCalendarAlt, faUserTie, faPencilAlt, faTrashAlt);
+library.add(faUser, faPhone, faScissors, faDollarSign, faCalendarAlt, faUserTie, faPencilAlt, faTrashAlt, faTimes);
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
 
 const citas = ref([]);
@@ -90,6 +89,11 @@ const formatPhoneNumber = (phoneNumber) => {
     if (!phoneNumber) return '';
     return phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
 };
+
+const cancelEdit = () => {
+    editingCita.value = null;
+    newCita.value = { cliente_nombre: '', cliente_telefono: '', servicio_id: '', fecha_hora: '', precio: '', user_id: '' }; // Reset the form data
+};
 </script>
 
 <template>
@@ -153,52 +157,55 @@ const formatPhoneNumber = (phoneNumber) => {
                                     <label for="fecha_hora" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha y Hora</label>
                                 </div>
                                 <input v-model="newCita.fecha_hora" type="datetime-local" id="fecha_hora" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-300" required>
-                                <div>
+                                <div class="flex space-x-2">
                                     <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 text-white font-semibold rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-102 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gray-500">
                                         {{ editingCita ? 'Actualizar' : 'Agregar' }}
-                                    </button>                           
-                            </div>
+                                    </button>
+                                    <button v-if="editingCita" @click="cancelEdit" type="button" class="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-102 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-red-500 flex items-center justify-center">
+                                        <font-awesome-icon :icon="['fas', 'trash-alt']" class="text-xl" />
+                                    </button>
+                                </div>
                             </form>
                         </div>
                         <div class="w-px bg-gray-300 mx-4"></div> <!-- Línea vertical -->
                         <div class="w-2/3"> <!-- Cambiado de w-1/2 a w-2/3 -->
-    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-200 mb-6">Lista de Citas</h3>
-    <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
-    <thead class="bg-gray-50 dark:bg-gray-700">
-        <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">ID</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Cliente</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Teléfono</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Servicio</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Precio</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Fecha y Hora</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Peluquero</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Acciones</th>
-        </tr>
-    </thead>
-    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-        <tr v-for="cita in citas" :key="cita.id" class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150 ease-in-out">
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.id }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.cliente?.nombre || 'N/A' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ formatPhoneNumber(cita.cliente?.telefono) || 'N/A' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.servicio?.nombre || 'N/A' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.servicio?.precio || 'N/A' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ formatDateTime(cita.fecha_hora) }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.user?.name || 'N/A' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                <button @click="editCita(cita)" class="px-3 py-2 bg-yellow-500 text-white rounded-md shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition duration-150 ease-in-out">
-                    <font-awesome-icon :icon="['fas', 'pencil-alt']" class="text-base" />
-                </button>
-                <button @click="deleteCita(cita.id)" class="px-3 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ml-2 transition duration-150 ease-in-out">
-                    <font-awesome-icon :icon="['fas', 'trash-alt']" class="text-base" />
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-    </div>
-</div>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-200 mb-6">Lista de Citas</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+                                    <thead class="bg-gray-50 dark:bg-gray-700">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Cliente</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Teléfono</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Servicio</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Precio</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Fecha y Hora</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Peluquero</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                        <tr v-for="cita in citas" :key="cita.id" class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-150 ease-in-out">
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.id }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.cliente?.nombre || 'N/A' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ formatPhoneNumber(cita.cliente?.telefono) || 'N/A' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.servicio?.nombre || 'N/A' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.servicio?.precio || 'N/A' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ formatDateTime(cita.fecha_hora) }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.user?.name || 'N/A' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                                                <button @click="editCita(cita)" class="px-3 py-2 bg-yellow-500 text-white rounded-md shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition duration-150 ease-in-out">
+                                                    <font-awesome-icon :icon="['fas', 'pencil-alt']" class="text-base" />
+                                                </button>
+                                                <button @click="deleteCita(cita.id)" class="px-3 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ml-2 transition duration-150 ease-in-out">
+                                                    <font-awesome-icon :icon="['fas', 'trash-alt']" class="text-base" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
