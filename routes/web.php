@@ -37,3 +37,7 @@ Route::middleware([
 Route::get('/citas', function () {
     return Inertia::render('Citas');
 })->name('citas');
+
+Route::get('/productos', function () {
+    return Inertia::render('Productos');
+})->name('productos');

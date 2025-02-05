@@ -6,6 +6,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductoController;
 
 
 
@@ -28,5 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('clientes', ClienteController::class);
 Route::apiResource('servicios', ServicioController::class);
 Route::apiResource('citas', CitaController::class);
+Route::apiResource('productos', ProductoController::class);
+
 
 Route::get('/usuarios', [UserController::class, 'index']);
