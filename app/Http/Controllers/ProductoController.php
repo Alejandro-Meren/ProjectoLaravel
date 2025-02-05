@@ -9,6 +9,7 @@ class ProductoController extends Controller
 {
     public function index()
     {
-        return Producto::paginate(12); // 12 productos por página
+        $productos = Producto::paginate(12); // Ajusta el número de elementos por página según sea necesario
+        return response()->json($productos);
     }
 }
