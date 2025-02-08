@@ -41,3 +41,8 @@ Route::get('/citas', function () {
 Route::get('/productos', function () {
     return Inertia::render('Productos');
 })->name('productos');
+
+Route::get('/estadisticas', function () {
+    return Inertia::render('Estadisticas');
+})->name('estadisticas');
+

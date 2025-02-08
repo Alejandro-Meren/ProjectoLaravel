@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductoController;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,6 +31,5 @@ Route::apiResource('clientes', ClienteController::class);
 Route::apiResource('servicios', ServicioController::class);
 Route::apiResource('citas', CitaController::class);
 Route::apiResource('productos', ProductoController::class);
-
-
 Route::get('/usuarios', [UserController::class, 'index']);
+ 

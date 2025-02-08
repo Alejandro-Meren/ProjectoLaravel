@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $usuarios = [
-            ['name' => 'Alejandro', 'email' => 'alejandro@example.com', 'password' => bcrypt('12345678')],
+            ['name' => 'Alejandro', 'email' => 'alejandro@example.com', 'password' => bcrypt('12345678'), 'rol' => 'admin'],
             ['name' => 'Maria', 'email' => 'maria@example.com', 'password' => bcrypt('12345678')],
             ['name' => 'Jose', 'email' => 'jose@example.com', 'password' => bcrypt('12345678')],
         ];

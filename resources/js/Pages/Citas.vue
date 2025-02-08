@@ -181,7 +181,7 @@ const cancelEdit = () => {
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Precio</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Fecha y Hora</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Peluquero</th>
-                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Acciones</th>
+                                            <th v-if="$page.props.auth.user.rol === 'admin'" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -193,11 +193,11 @@ const cancelEdit = () => {
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.servicio?.precio || 'N/A' }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ formatDateTime(cita.fecha_hora) }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cita.user?.name || 'N/A' }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                <button @click="editCita(cita)" class="px-3 py-2 bg-yellow-500 text-white rounded-md shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition duration-150 ease-in-out">
+                                            <td  v-if="$page.props.auth.user.rol === 'admin'" class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                                                <button v-if="$page.props.auth.user.rol === 'admin'" @click="editCita(cita)" class="px-3 py-2 bg-yellow-500 text-white rounded-md shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition duration-150 ease-in-out">
                                                     <font-awesome-icon :icon="['fas', 'pencil-alt']" class="text-base" />
                                                 </button>
-                                                <button @click="deleteCita(cita.id)" class="px-3 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ml-2 transition duration-150 ease-in-out">
+                                                <button v-if="$page.props.auth.user.rol === 'admin'" @click="deleteCita(cita.id)" class="px-3 py-2 bg-red-600 text-white rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ml-2 transition duration-150 ease-in-out">
                                                     <font-awesome-icon :icon="['fas', 'trash-alt']" class="text-base" />
                                                 </button>
                                             </td>
