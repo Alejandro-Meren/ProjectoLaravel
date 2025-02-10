@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,11 @@ Route::get('/productos', function () {
 })->name('productos');
 
 Route::get('/estadisticas', function () {
-    return Inertia::render('Estadisticas');
+   if (Auth::user()->rol != 'admin') {
+        return redirect('dashboard');
+    } 
+    return Inertia::render('Estadisticas', [
+        'numUsuarios' => \App\Models\User::count(),
+    ]);
 })->name('estadisticas');
 

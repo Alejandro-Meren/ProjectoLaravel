@@ -10,22 +10,26 @@ const citasData = ref([]);
 const serviciosData = ref([]);
 const productosData = ref([]);
 
-const fetchData = async () => {
-  // Simula la obtención de datos desde una API
-  citasData.value = [10, 20, 30, 40, 50, 60, 70]; // Datos de ejemplo
-  serviciosData.value = [100, 200, 300, 400, 500]; // Datos de ejemplo
-  productosData.value = [15, 25, 35, 45, 55]; // Datos de ejemplo
-};
-
-onMounted(() => {
-  fetchData();
+defineProps({
+    numUsuarios: Number
 });
+
+// const fetchData = async () => {
+//   // Simula la obtención de datos desde una API
+//   citasData.value = [numUsuarios]; // Datos de ejemplo
+  
+// };
+
+// onMounted(() => {
+
+//   fetchData();
+// });
 </script>
 
 <template>
   <AppLayout title="Estadísticas">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+      <h2 class="font-semibold text-xl text-white-800 leading-tight">
         Estadísticas
       </h2>
     </template>
@@ -36,15 +40,18 @@ onMounted(() => {
           <div class="p-6 bg-white border-b border-gray-200">
             <h3 class="text-lg font-medium text-gray-900">Citas por Semana</h3>
             <Bar :data="{
-              labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+              labels: ['Usuarios', 'Citas', 'Citas Canceladas'],
               datasets: [{
                 label: 'Citas',
                 backgroundColor: '#f87979',
-                data: citasData
+                data: [numUsuarios, 5, 6]
               }]
             }" />
+            <p>Hola {{ numUsuarios }}</p>
           </div>
         </div>
+
+        
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-6">
           <div class="p-6 bg-white border-b border-gray-200">

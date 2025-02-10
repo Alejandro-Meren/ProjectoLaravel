@@ -65,7 +65,7 @@ const logout = () => {
         </svg>
         Productos
     </NavLink>
-    <NavLink :href="route('estadisticas')" :active="route().current('estadisticas')" class="flex items-center text-pink-600 hover:text-pink-800">
+    <NavLink v-if="$page.props.auth.user.rol === 'admin'" :href="route('estadisticas')" :active="route().current('estadisticas')" class="flex items-center text-pink-600 hover:text-pink-800">
         <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4m16 0a8 8 0 11-16 0 8 8 0 0116 0z" />
         </svg>

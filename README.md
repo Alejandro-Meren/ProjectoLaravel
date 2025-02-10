@@ -198,3 +198,8 @@ El template está dividido en dos secciones principales:
 2. **Listado de Citas**:
     - Muestra una tabla con las citas existentes.
     - Cada fila de la tabla muestra los detalles de una cita y botones para editar o eliminar la cita.
+
+
+## Sacar estadisticas
+
+- 
