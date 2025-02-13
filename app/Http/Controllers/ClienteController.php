@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 class ClienteController extends Controller {
     public function index() {
         return Cliente::all();
+        return Cliente::orderBy('updated_at', 'desc')->get();
+
     }
 
     public function store(Request $request) {

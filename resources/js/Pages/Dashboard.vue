@@ -1,10 +1,31 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { defineProps } from 'vue';
+import { defineProps, ref, computed } from 'vue';
+import axios from 'axios';
 
-defineProps({
+const props = defineProps({
     clientes: Array
 });
+
+const clientes = ref([...props.clientes]);
+
+const sortedClientes = computed(() => {
+    return [...clientes.value].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+});
+
+
+const updateCliente = async (id, data) => {
+    try {
+        const response = await axios.put(`/api/clientes/${id}`, data);
+        const updatedCliente = response.data;
+        const index = clientes.value.findIndex(cliente => cliente.id === id);
+        if (index !== -1) {
+            clientes.value[index] = updatedCliente;
+        }
+    } catch (error) {
+        console.error('Error updating cliente:', error);
+    }
+};
 </script>
 
 <template>
@@ -24,17 +45,26 @@ defineProps({
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Id
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Nombre
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Teléfono
                                     </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Última Modificación
+                                    </th>
+                
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                <tr v-for="cliente in clientes" :key="cliente.id">
+                                <tr v-for="cliente in sortedClientes" :key="cliente.id">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cliente.id }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cliente.nombre }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ cliente.telefono }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ new Date(cliente.updated_at).toLocaleString() }}</td>
                                 </tr>
                             </tbody>
                         </table>

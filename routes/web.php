@@ -37,8 +37,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         if (Auth::user()->rol != 'admin') {
             return redirect('citas');
-        } 
-        return Inertia::render('Dashboard', ['clientes' => Cliente::get()]);
+        }
+        return Inertia::render('Dashboard', ['clientes' => Cliente::orderBy('updated_at', 'desc')->get()]);
     })->name('dashboard');
 });
 
