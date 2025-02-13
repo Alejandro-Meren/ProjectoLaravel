@@ -6,24 +6,14 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement);
 
-const citasData = ref([]);
-const serviciosData = ref([]);
-const productosData = ref([]);
-
 defineProps({
-    numUsuarios: Number
+    numUsuarios: Number,
+    numCitas: Number,
+    numServicios: Number,
+
+
 });
 
-// const fetchData = async () => {
-//   // Simula la obtención de datos desde una API
-//   citasData.value = [numUsuarios]; // Datos de ejemplo
-  
-// };
-
-// onMounted(() => {
-
-//   fetchData();
-// });
 </script>
 
 <template>
@@ -40,14 +30,16 @@ defineProps({
           <div class="p-6 bg-white border-b border-gray-200">
             <h3 class="text-lg font-medium text-gray-900">Citas por Semana</h3>
             <Bar :data="{
-              labels: ['Usuarios', 'Citas', 'Citas Canceladas'],
+              labels: ['Usuarios', 'Citas', 'Productos'],
               datasets: [{
                 label: 'Citas',
                 backgroundColor: '#f87979',
-                data: [numUsuarios, 5, 6]
+                data: [numUsuarios, numCitas, numServicios]
               }]
             }" />
             <p>Hola {{ numUsuarios }}</p>
+            <p>Citas: {{ numCitas }}</p>
+            <p>Productos: {{ numServicios }}</p>
           </div>
         </div>
 

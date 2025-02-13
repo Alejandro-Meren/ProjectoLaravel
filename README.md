@@ -202,4 +202,5 @@ El template está dividido en dos secciones principales:
 
 ## Sacar estadisticas
 
-- 
+- Primero en la ruta web declaras el nombre de la estadistica que quieres sacar y apuntas al modelo sino tienes controlador
+- Segundo vas a la vista, defines las props de lo que quieres sacar y despues lo pones enre corchetes

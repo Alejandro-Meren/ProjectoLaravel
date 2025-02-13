@@ -1,9 +1,12 @@
 <?php
+// filepath: /c:/Users/aleme/OneDrive/Escritorio/ProyectoLaravel/routes/web.php
+
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Cliente;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +25,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'userName' => Auth::check() ? Auth::user()->name : 'Invitado',
     ]);
 });
 
@@ -31,24 +35,34 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        if (Auth::user()->rol != 'admin') {
+            return redirect('citas');
+        } 
+        return Inertia::render('Dashboard', ['clientes' => Cliente::get()]);
     })->name('dashboard');
 });
 
+
 Route::get('/citas', function () {
-    return Inertia::render('Citas');
+    return Inertia::render('Citas', [
+      'numCitas' => \App\Models\Cita::count(),
+    ]);
 })->name('citas');
 
+
 Route::get('/productos', function () {
-    return Inertia::render('Productos');
+    return Inertia::render('Productos', [
+        'numProductos' => \App\Models\Producto::count(),
+    ]);
 })->name('productos');
 
 Route::get('/estadisticas', function () {
-   if (Auth::user()->rol != 'admin') {
+    if (Auth::user()->rol != 'admin') {
         return redirect('dashboard');
     } 
     return Inertia::render('Estadisticas', [
         'numUsuarios' => \App\Models\User::count(),
+        'numCitas' => \App\Models\Cita::count(), // Añade el total de citas
+        'numServicios' => \App\Models\Servicio::count(), // Añade el total de productos
     ]);
 })->name('estadisticas');
-

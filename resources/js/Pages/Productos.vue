@@ -9,7 +9,7 @@ const lastPage = ref(1);
 
 const fetchProductos = async (page = 1) => {
     try {
-        const response = await axios.get(`/api/productos?page=${page}`, {
+        const response = await axios.get(`/productos?page=${page}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }

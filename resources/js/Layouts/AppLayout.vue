@@ -47,11 +47,11 @@ const logout = () => {
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-    <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="flex items-center text-pink-600 hover:text-pink-800">
+    <NavLink v-if="$page.props.auth.user.rol === 'admin'" :href="route('dashboard')" :active="route().current('dashboard')" class="flex items-center text-pink-600 hover:text-pink-800">
         <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0H7m6 0v6m0 0H7m6 0h6" />
         </svg>
-        Dashboard
+        Clientes
     </NavLink>
     <NavLink :href="route('citas')" :active="route().current('citas')" class="flex items-center text-pink-600 hover:text-pink-800">
         <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,11 +66,11 @@ const logout = () => {
         Productos
     </NavLink>
     <NavLink v-if="$page.props.auth.user.rol === 'admin'" :href="route('estadisticas')" :active="route().current('estadisticas')" class="flex items-center text-pink-600 hover:text-pink-800">
-        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4m16 0a8 8 0 11-16 0 8 8 0 0116 0z" />
-        </svg>
-        Estadisticas
-    </NavLink>
+    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17a1 1 0 011-1h1a1 1 0 011 1v3h-3v-3zm-4-4a1 1 0 011-1h1a1 1 0 011 1v7H7v-7zm8-4a1 1 0 011-1h1a1 1 0 011 1v11h-3V9zm-4-4a1 1 0 011-1h1a1 1 0 011 1v15h-3V5z" />
+    </svg>
+    Estadísticas
+</NavLink>
     
 </div>
             </div>
