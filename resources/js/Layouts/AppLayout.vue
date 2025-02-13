@@ -10,6 +10,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 
 defineProps({
     title: String,
+
 });
 
 const showingNavigationDropdown = ref(false);
@@ -36,6 +37,7 @@ const logout = () => {
         <div class="min-h-screen bg-pink-100 dark:bg-gray-900">
             <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
+     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
@@ -46,7 +48,10 @@ const logout = () => {
                     </Link>
                 </div>
 
+
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <p class="text-white text-center text-2xl font-bold mt-4">Bienvenido {{ $page.props.auth.user.name }}</p>
+
     <NavLink v-if="$page.props.auth.user.rol === 'admin'" :href="route('dashboard')" :active="route().current('dashboard')" class="flex items-center text-pink-600 hover:text-pink-800">
         <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0H7m6 0v6m0 0H7m6 0h6" />
@@ -71,6 +76,7 @@ const logout = () => {
     </svg>
     Estadísticas
 </NavLink>
+
     
 </div>
             </div>
