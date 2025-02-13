@@ -14,7 +14,18 @@ const sortedClientes = computed(() => {
 });
 
 
-
+const updateCliente = async (id, data) => {
+    try {
+        const response = await axios.put(`/api/clientes/${id}`, data);
+        const updatedCliente = response.data;
+        const index = clientes.value.findIndex(cliente => cliente.id === id);
+        if (index !== -1) {
+            clientes.value[index] = updatedCliente;
+        }
+    } catch (error) {
+        console.error('Error updating cliente:', error);
+    }
+};
 </script>
 
 <template>
